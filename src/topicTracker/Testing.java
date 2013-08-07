@@ -10,6 +10,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
+import twitter4j.json.*;
 
 public class Testing {
 
@@ -27,6 +28,8 @@ public class Testing {
 		System.out.println("Hola Mundo");
 
 		ConfigurationBuilder cb = new ConfigurationBuilder();
+		cb.setJSONStoreEnabled(true);
+		
 		cb.setDebugEnabled(true)
 		.setOAuthConsumerKey(OAUTH_CONSUMER_KEY)
 		.setOAuthConsumerSecret(OAUTH_CONSUMER_SECRET)
@@ -47,6 +50,10 @@ public class Testing {
 		    if(geo!=null){
 		    	System.out.println(geo.toString());
 		    	System.out.println("@" + status.getUser().getScreenName() + ":" + status.getText());
+		    	
+		        String json = DataObjectFactory.getRawJSON(status);
+		        System.out.println(json);
+		    	
 			}
 					
 		    }
