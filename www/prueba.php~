@@ -1,3 +1,8 @@
+// Show all information, defaults to INFO_ALL
+
+
+
+
 <?php
 try {
   // open connection to MongoDB server
@@ -30,7 +35,8 @@ try {
 $response = json_encode(iterator_to_array($cursor));
 
 echo $response;
-// disconnect from server
+
+  // disconnect from server
   $conn->close();
 } catch (MongoConnectionException $e) {
   die('Error connecting to MongoDB server');
@@ -38,6 +44,42 @@ echo $response;
   die('Error: ' . $e->getMessage());
 }
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+<script
+src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false">
+</script>
+
+<script>
+var myCenter=new google.maps.LatLng(51.508742,-0.120850);
+
+function initialize()
+{
+var mapProp = {
+  center:myCenter,
+  zoom:5,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+
+var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+var marker=new google.maps.Marker({
+  position:myCenter,
+  });
+
+marker.setMap(map);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+</head>
+
+<body>
+<div id="googleMap" style="width:500px;height:380px;"></div>
+</body>
+</html>
 
 
 

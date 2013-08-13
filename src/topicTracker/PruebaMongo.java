@@ -100,8 +100,10 @@ public class PruebaMongo {
 					//
 					//					coll.insert(doc);
 
+					String content=status.getText().replaceAll("\"", "");
+					
 
-					String json = "{tweetId:" + status.getId() + ",userId:" + status.getUser().getId() + ",text: \"" + status.getText() + "\",loc: [ " + geo.getLatitude() + ", " + geo.getLongitude() + "] }";
+					String json = "{tweetId:" + status.getId() + ",userId:" + status.getUser().getId() + ",text: \"" + content + "\",loc: [ " + geo.getLatitude() + ", " + geo.getLongitude() + "] }";
 
 					System.out.println(json);
 
