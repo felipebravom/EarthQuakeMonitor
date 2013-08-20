@@ -4,23 +4,24 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
-  $("button").click(function(){
-    $.getJSON("http://localhost/~felipe/www/retrieve.php",function(results){	
+  $("#getTweets").click(function(){
+    $.getJSON("retrieve.php",function(results){	
 	//alert(results.tweets[0].text);        
 	$.each(results.tweets, function(i, field){
-        $("div").append(field.text + " "+field.lat);
+	$("#tweetList").append("<li>"+ field.text + field.lat + " "+ field.long +"</li>");
+
       });
     });
   });
 });
-
-
-
 </script>
 </head>
+
 <body>
-<button>Get JSON data</button>
-<div></div>
+<button id="getTweets">Get Tweets</button>
+
+<ol id="tweetList">
+</ol>
 
 
 </body>
