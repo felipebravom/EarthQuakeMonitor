@@ -68,7 +68,7 @@ $(document).ready(function(){
     $.getJSON("retrieve.php",function(results){	
 	//alert(results.tweets[0].text);        
 	$.each(results.tweets, function(i, field){
-	$("#tweetList").append("<li><i class=\"icon-twitter\"></i>"+ field.text + field.lat + " "+ field.long +"</li>");
+	$("#tweetList").append("<li><i class=\"icon-envelope\"></i>"+ field.text + field.lat + " "+ field.long +"</li>");
 
       });
     });
