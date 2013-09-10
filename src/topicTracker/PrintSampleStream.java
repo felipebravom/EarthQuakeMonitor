@@ -26,15 +26,35 @@ public class PrintSampleStream {
 				OAUTH_ACCESS_TOKEN_SECRET);
 
 		twitterStream.setOAuthAccessToken(accessToken);
+		
+		MongoConnection mongo=new MongoConnection();
+		mongo.setupMongo();
 
-		StatusListener listener = new EarthQuakeListener();
+		StatusListener listener = new EarthQuakeListener(mongo);
+		
+		
 		
 		// Para filtrar 
 		
 		FilterQuery fq = new FilterQuery();
-        String keywords[] = {"temblor","terremoto","sismo","tsunami"};
+        String keywords[] = {"terremoto","temblor","sismo","tsunami","telúrico","tiembla","temblando"};
 
         fq.track(keywords);
+        
+        
+//        double lat = 53.186288;
+//        double longitude = -8.043709;
+//        double lat1 = lat - 4;
+//        double longitude1 = longitude - 8;
+//        double lat2 = lat + 4;
+//        double longitude2 = longitude + 8;
+//
+//        double[][] bb = {{longitude1, lat1}, {longitude2, lat2}};
+//
+//        fq.locations(bb);
+  
+        
+        
         
    
         twitterStream.addListener(listener);
@@ -45,8 +65,6 @@ public class PrintSampleStream {
 		
 		
 
-		
-	//	twitterStream.sample();
 	}
 
 }
