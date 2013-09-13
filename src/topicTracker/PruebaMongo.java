@@ -73,7 +73,8 @@ public class PruebaMongo {
 			TwitterFactory tf = new TwitterFactory(cb.build());
 			Twitter twitter = tf.getInstance();
 
-			Query query = new Query("temblor OR terremoto OR sismo OR tsunami");
+			Query query = new Query("temblor OR terremoto OR sismo OR tsunami lang:es");
+			
 			query.setCount(100);
 			QueryResult result = twitter.search(query);
 			for (Status status : result.getTweets()) {

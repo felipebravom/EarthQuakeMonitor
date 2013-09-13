@@ -34,29 +34,19 @@ public class EarthQuakeListener implements StatusListener {
 	}
 	
 	
-	// Creates a DBObject for MongoDB from a Status tweet
-	public DBObject dbTweet(Status status){
-		DBObject tweet = new BasicDBObject();
-		tweet.put("tweetId",status.getId());
-		tweet.put("userId", status.getUser().getId());
-		tweet.put("text", status.getText());
-		tweet.put("date",status.getCreatedAt());			
-		Double[] geo={status.getGeoLocation().getLatitude(), status.getGeoLocation().getLongitude()};			
-		tweet.put("loc", geo);
-		
-		return tweet;		
-	}
-	
+
 	
 
 	public void onStatus(Status status) {
 		
+		System.out.println("@" + status.getUser().getScreenName()+" - " + status.getText() +status.getUser().getLocation());
+		
 		
 		// Only tweets with a geolocation are considered
 		if(status.getGeoLocation()!=null){
-			System.out.println("@" + status.getUser().getScreenName()+" - " + status.getText() +status.getUser().getLocation());
+			System.out.println("GEO");
 			
-		    DBObject tweet=dbTweet(status);	
+		    DBObject tweet=Operations.dbTweet(status);	
 		    this.mongoConnection.insert(tweet);
 		
 		}		

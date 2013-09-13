@@ -42,6 +42,20 @@ public class PrintSampleStream {
         fq.track(keywords);
         
         
+        double[][] bb = {{-57.891497,-81.174317}, {-15.834536,-61.311036 }};
+        fq.locations(bb);
+        
+        
+        // Bounding Box: NE -17.507549, -66.417549. SW -56.533779, -109.474930.
+        
+         // -15.834536,-81.174317  Norte izquierda
+         // -15.834536,-61.311036  Norte derecha
+        
+          //-57.891497,-81.174317   Sur Izquierda
+        
+        // -57.891497,-61.311036  
+        
+        
 //        double lat = 53.186288;
 //        double longitude = -8.043709;
 //        double lat1 = lat - 4;
