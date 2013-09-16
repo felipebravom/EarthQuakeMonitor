@@ -42,6 +42,12 @@ public class EarthQuakeListener implements StatusListener {
 		System.out.println("@" + status.getUser().getScreenName()+" - " + status.getText() +status.getUser().getLocation());
 		
 		
+		System.out.println("Place "+status.getPlace());
+		System.out.println("USerPlace"+status.getUser().getLocation());
+		System.out.println("Loca"+status.getGeoLocation().toString());
+		
+		
+		
 		// Only tweets with a geolocation are considered
 		if(status.getGeoLocation()!=null){
 			System.out.println("GEO");

@@ -39,7 +39,7 @@ public class PrintSampleStream {
 		FilterQuery fq = new FilterQuery();
         String keywords[] = {"terremoto","temblor","sismo","tsunami","telúrico","tiembla","temblando"};
 
-        fq.track(keywords);
+       fq.track(keywords);
         
         
         double[][] bb = {{-57.891497,-81.174317}, {-15.834536,-61.311036 }};
