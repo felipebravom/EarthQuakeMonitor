@@ -14,7 +14,7 @@ public class MongoConnection {
 	public static final String HOST="localhost"; // database host
 	public static final int PORT=27017; // database port 
 	public static final String DB_NAME="EarthQuake"; // database name
-	public static final String COLLECTION_NAME="tweet";  
+	public static final String COLLECTION_NAME="geo_tweets";  
 	
 	
 	private MongoClient mongo;

@@ -1,5 +1,6 @@
 package topicTracker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mongodb.DBObject;
@@ -82,11 +83,11 @@ public class TwitterQuery implements Runnable {
 	
 	
 	// Process the list of Status
-	public void processStatus(List<Status> statusList){
+	public List<DBObject> processStatus(List<Status> statusList){
+		
+		List<DBObject> dbObjects=new ArrayList<DBObject>();
+		
 		for (Status status : statusList) {
-
-
-
 			// Only tweets with a geolocation are considered
 			if (status.getGeoLocation() != null) {
 				System.out.println("@" + status.getUser().getScreenName()
@@ -99,16 +100,20 @@ public class TwitterQuery implements Runnable {
 				twitterEntry.evaluateSentiStrength(this.sentiStrength);
 
 				DBObject tweet = twitterEntry.dbTweet();
-				this.mongoConnection.insert(tweet);
+				dbObjects.add(tweet);				
+				
 
 			}
 
 		}
+		return dbObjects;
 		
 	}
 
 	public void getAndSaveTweets() {
 
+		List<DBObject> geoTweets=new ArrayList<DBObject>(); // the list of the processed tweets to be stored
+		
 		Query query = new Query(QUERY);
 		
 		//-17.035777,-69.656983
@@ -132,11 +137,10 @@ public class TwitterQuery implements Runnable {
 			
 			System.out.println(this.sinceId);
 			
-			// process the Status list			
-			this.processStatus(result.getTweets());
-				
+			// process the Status list	and adds the elements		
+			geoTweets.addAll(this.processStatus(result.getTweets()));
 			
-
+				
 			
 		while ((query = result.nextQuery()) != null){
 			
@@ -147,15 +151,15 @@ public class TwitterQuery implements Runnable {
 			
 			
 			System.out.println(this.sinceId);
-			this.processStatus(result.getTweets());
-						
-			
+			geoTweets.addAll(this.processStatus(result.getTweets()));				
 			
 		}
+		
+		this.mongoConnection.insert(geoTweets);
 
 		} catch (TwitterException e) {
 			// TODO Auto-generated catch block
-				
+			this.status=-1;				
 			e.printStackTrace();
 		}
 
@@ -192,8 +196,6 @@ public class TwitterQuery implements Runnable {
 		Thread a=new Thread(tq);		
 		a.start();
 		
-		
-		//tq.getAndSaveTweets();
 		
 
 	}
