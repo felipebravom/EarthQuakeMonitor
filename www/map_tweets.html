@@ -46,7 +46,7 @@ body {
 		var map = new google.maps.Map(document.getElementById("googleMap"),
 				mapProp);
 
-		$.getJSON("retrieve.php", function(results) {
+		$.getJSON("retrieve.php", { since: 48 },  function(results) {
 			//alert(results.tweets[0].text);        
 			$.each(results.tweets, function(i, field) {
 				var latLng = new google.maps.LatLng(field.lat, field.long);

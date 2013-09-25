@@ -38,7 +38,8 @@ body {
 			function() {
 				$("#getTweets").click(
 						function() {
-							$.getJSON("retrieve.php", function(results) {
+							alert($(this).val());
+							$.getJSON("retrieve.php", { since: $(this).val()}, function(results) {
 								//alert(results.tweets[0].text);        
 								$.each(results.tweets, function(i, field) {
 									$("#tweetList").append(
@@ -73,7 +74,8 @@ body {
 					<ul class="nav">
 						<li><a href="home.html">Home</a></li>
 						<li><a href="map_tweets.html">Mapa de Tweets</a></li>
-						<li class="active"><a href="check_tweets.html">Chequear Tweets</a></li>
+						<li class="active"><a href="check_tweets.html">Chequear
+								Tweets</a></li>
 					</ul>
 				</div>
 				<!--/.nav-collapse -->
@@ -84,7 +86,26 @@ body {
 	<div class="container">
 
 		<h1>Chequear Tweets</h1>
-		<button class="btn btn-primary" id="getTweets">Get Tweets</button>
+		<button class="btn btn-primary" id="getTweets" value=3>Get Tweets</button>
+
+		<form class="well form-inline">
+         <div class="control-group">  
+            <label class="control-label" for="select01">Select list</label>  
+            <div class="controls">  
+              <select id="select01">  
+                <option>1</option>  
+                <option>2</option>  
+                <option>3</option>  
+                <option>4</option>  
+                <option>5</option>  
+              </select>  
+            </div>  
+          </div>  
+
+			<button type="submit" class="btn btn-primary">Sign in</button>
+		</form>
+
+
 
 		<p>
 			<i class="icon-envelope"></i> Tweets Recientes
