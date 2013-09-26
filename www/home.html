@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
@@ -11,6 +11,7 @@
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
+
 <!-- Le styles -->
 <link href="css/bootstrap.css" rel="stylesheet">
 <style>
@@ -21,19 +22,48 @@ body {
 </style>
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
-      <script src="../assets/js/html5shiv.js"></script>
-    <![endif]-->
-
-<!-- Fav and touch icons -->
 
 
+<script>
+// To get the value of the since parameter
+	function GetURLParameter(sParam) {
+		var sPageURL = window.location.search.substring(1);
+		var sURLVariables = sPageURL.split('&');
+		for ( var i = 0; i < sURLVariables.length; i++) {
+			var sParameterName = sURLVariables[i].split('=');
+			if (sParameterName[0] == sParam) {
+				return sParameterName[1];
+			}
+		}
+	}
+</script>
+
+
+<script>
+	$(document).ready(
+			function() {							
+							//alert(GetURLParameter('since'));
+							$.getJSON("retrieve.php", {
+								since : GetURLParameter('since')
+							}, function(results) {
+								//alert(results.tweets[0].text);        
+								$.each(results.tweets, function(i, field) {
+									$("#tweetList").append(
+											"<li><i class=\"icon-twitter\"></i>"
+													+ field.text + field.lat
+													+ " " + field.long + " "
+													+ field.date + " "
+													+ field.neu + "</li>");
+
+								});
+							});
+						});
+			
+</script>
 
 
 
 </head>
-
 <body>
 
 	<div class="navbar navbar-inverse navbar-fixed-top">
@@ -44,12 +74,36 @@ body {
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="brand" href="#">Monitor Sísmico Social</a>
+				<a class="brand" href="home.html">Monitor Sísmico Social</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="map_tweets.html">Mapa de Tweets</a></li>
-						<li><a href="check_tweets.html">Chequear Tweets</a></li>
+						<li><a href="home.html">Home</a></li>
+
+						<li class="dropdown"><a href="map_tweets.html"
+							class="dropdown-toggle" data-toggle="dropdown">Mapa de Tweets <b class="caret"></b>
+						</a>
+							<ul class="dropdown-menu">
+								<li><a href="map_tweets.html?since=1">Última hora</a></li>
+								<li><a href="map_tweets.html?since=24">Último día</a></li>
+								<li><a href="map_tweets.html?since=48">Últimos dos
+										días</a></li>
+								<li><a href="map_tweets.html?since=0">Todos los
+										Tweets</a></li>
+	
+							</ul></li>
+
+						<li class="dropdown"><a href="check_tweets.html"
+							class="dropdown-toggle" data-toggle="dropdown">Chequear
+								Tweets <b class="caret"></b>
+						</a>
+							<ul class="dropdown-menu">
+								<li><a href="check_tweets.html?since=1">Última hora</a></li>
+								<li><a href="check_tweets.html?since=24">Último día</a></li>
+								<li><a href="check_tweets.html?since=48">Últimos dos
+										días</a></li>
+								<li><a href="check_tweets.html?since=0">Todos los
+										Tweets</a></li>
+							</ul></li>
 					</ul>
 				</div>
 				<!--/.nav-collapse -->
@@ -57,42 +111,21 @@ body {
 		</div>
 	</div>
 
-	<div class="container">
 
-		
-		<div class="post-it-title twodeg pushpin-blue post-it-out pt-small ">
+	<div class="container">
 					<h3>¿Qué es esto?</h3>
 					<div>
 						<span>Es un sistema para monitorear los mensajes emitidos en Twitter asociados a eventos sísmicos.</span>
 					</div>
 				</div>
-		
-	</div>
-	<!-- /container -->
 
 
 
-
-
-
-	<!-- Le javascript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-
-	<script src="js/bootstrap-transition.js"></script>
-	<script src="js/bootstrap-alert.js"></script>
-	<script src="js/bootstrap-modal.js"></script>
-	<script src="js/bootstrap-dropdown.js"></script>
-	<script src="js/bootstrap-scrollspy.js"></script>
-	<script src="js/bootstrap-tab.js"></script>
-	<script src="js/bootstrap-tooltip.js"></script>
-	<script src="js/bootstrap-popover.js"></script>
-	<script src="js/bootstrap-button.js"></script>
-	<script src="js/bootstrap-collapse.js"></script>
-	<script src="js/bootstrap-carousel.js"></script>
-	<script src="js/bootstrap-typeahead.js"></script>
-
-
-
+	<script type="text/javascript" src="js/bootstrap-dropdown.js"></script>
+	<script type="text/javascript">
+        $(document).ready(function () {
+            $('.dropdown-toggle').dropdown();
+        });
+   </script>
 </body>
 </html>
