@@ -39,6 +39,7 @@ public class TwitterQuery implements Runnable {
 	
 	// Waiting period between queries in minutes
 	public final static int WAIT_PERIOD=10;
+	public final static int PROBLEM_PERIOD=60;
 	
 	
 	private MongoConnection mongoConnection;
@@ -135,7 +136,6 @@ public class TwitterQuery implements Runnable {
 			if(result.getMaxId()>this.sinceId)			
 				this.sinceId=result.getMaxId();	
 			
-			System.out.println(this.sinceId);
 			
 			// process the Status list	and adds the elements		
 			geoTweets.addAll(this.processStatus(result.getTweets()));
@@ -158,7 +158,7 @@ public class TwitterQuery implements Runnable {
 		this.mongoConnection.insert(geoTweets);
 
 		} catch (TwitterException e) {
-			// TODO Auto-generated catch block
+			// If there is a problem I set the status to -1
 			this.status=-1;				
 			e.printStackTrace();
 		}
@@ -168,11 +168,22 @@ public class TwitterQuery implements Runnable {
 	// 
 	public void run() {
 		try {
-			while (true) {
-				this.getAndSaveTweets();
-				Thread.sleep(1000 * 60 * WAIT_PERIOD);
-				System.out.println("Deperte");
-
+			while (true) {			
+				// I get new tweets only if the status is fine
+				if(this.status==1){
+					this.getAndSaveTweets();
+					Thread.sleep(1000 * 60 * WAIT_PERIOD);
+					System.out.println("Deperte");					
+				}
+				
+				// If there is a problem I Wait for one Hour and setup twitter again
+				else{
+					System.out.println("PROBLEM");	
+					Thread.sleep(1000 * 60 * PROBLEM_PERIOD);
+					this.setupTwitter();
+				}
+							
+				
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -191,12 +202,10 @@ public class TwitterQuery implements Runnable {
 		tq.setupSentiStrength();
 		
 		tq.setupTwitter();
-		
-		
+				
 		Thread a=new Thread(tq);		
 		a.start();
-		
-		
+				
 
 	}
 
