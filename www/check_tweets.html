@@ -21,6 +21,7 @@ body {
 }
 </style>
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/mystyle.css" rel="stylesheet">
 
 
 
@@ -48,11 +49,34 @@ body {
 				}, function(results) {
 					//alert(results.tweets[0].text);        
 					$.each(results.tweets, function(i, field) {
-						$("#tweetList").append(
-								"<li><i class=\"icon-twitter\"></i>"
-										+ field.text + field.lat + " "
+/* 						$("#tweetList").append(
+								"<li>"	+ field.text + field.lat + " "
 										+ field.long + " " + field.date + " "
-										+ field.neu + "</li>");
+										+ field.neu + "</li>"); */	
+										
+						var tr_type;
+						if(field.neu>0){
+							tr_type="success";								
+						}
+						else if(field.neu==0){
+							tr_type="warning";							
+						}
+						else{
+							tr_type="error";
+						}				
+										
+										
+						$("#tweetTable").append(
+								"	<tr class=\""+tr_type+"\"> "
+								+	"<td>"+(i+1)+"</td>"
+								+	"<td>"+field.text+"</td>"
+								+	"<td>" + field.date + "</td>"
+								+	"<td>"+ (field.lat).toFixed(2) + "</td>"
+								+	"<td>"+ (field.long).toFixed(2) + "</td>"
+								+	"</tr>");
+						
+			
+						
 
 					});
 				});
@@ -78,16 +102,15 @@ body {
 						<li><a href="home.html">Home</a></li>
 
 						<li class="dropdown"><a href="map_tweets.html"
-							class="dropdown-toggle" data-toggle="dropdown">Mapa de Tweets <b class="caret"></b>
+							class="dropdown-toggle" data-toggle="dropdown">Mapa de Tweets
+								<b class="caret"></b>
 						</a>
 							<ul class="dropdown-menu">
 								<li><a href="map_tweets.html?since=1">Última hora</a></li>
 								<li><a href="map_tweets.html?since=24">Último día</a></li>
-								<li><a href="map_tweets.html?since=48">Últimos dos
-										días</a></li>
-								<li><a href="map_tweets.html?since=0">Todos los
-										Tweets</a></li>
-	
+								<li><a href="map_tweets.html?since=48">Últimos dos días</a></li>
+								<li><a href="map_tweets.html?since=0">Todos los Tweets</a></li>
+
 							</ul></li>
 
 						<li class="dropdown"><a href="check_tweets.html"
@@ -111,11 +134,24 @@ body {
 
 
 	<div class="container">
-		<p>
-			<i class="icon-envelope"></i> Tweets Recientes
-		</p>
-		<ol id="tweetList">
-		</ol>
+
+
+		<table class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Contenido</th>
+					<th>Fecha</th>
+					<th>Latitud</th>
+					<th>Longitud</th>
+				</tr>
+			</thead>
+			<tbody id="tweetTable">
+			
+			</tbody>
+		</table>
+
+
 	</div>
 
 

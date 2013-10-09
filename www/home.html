@@ -21,6 +21,7 @@ body {
 }
 </style>
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/sticky_footer.css" rel="stylesheet">
 
 
 
@@ -65,59 +66,76 @@ body {
 
 </head>
 <body>
+	<div id="wrap">
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="brand" href="home.html">Monitor Sísmico Social</a>
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li><a href="home.html">Home</a></li>
 
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<button type="button" class="btn btn-navbar" data-toggle="collapse"
-					data-target=".nav-collapse">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="brand" href="home.html">Monitor Sísmico Social</a>
-				<div class="nav-collapse collapse">
-					<ul class="nav">
-						<li><a href="home.html">Home</a></li>
+							<li class="dropdown"><a href="map_tweets.html"
+								class="dropdown-toggle" data-toggle="dropdown">Mapa de
+									Tweets <b class="caret"></b>
+							</a>
+								<ul class="dropdown-menu">
+									<li><a href="map_tweets.html?since=1">Última hora</a></li>
+									<li><a href="map_tweets.html?since=24">Último día</a></li>
+									<li><a href="map_tweets.html?since=48">Últimos dos
+											días</a></li>
+									<li><a href="map_tweets.html?since=0">Todos los Tweets</a></li>
 
-						<li class="dropdown"><a href="map_tweets.html"
-							class="dropdown-toggle" data-toggle="dropdown">Mapa de Tweets <b class="caret"></b>
-						</a>
-							<ul class="dropdown-menu">
-								<li><a href="map_tweets.html?since=1">Última hora</a></li>
-								<li><a href="map_tweets.html?since=24">Último día</a></li>
-								<li><a href="map_tweets.html?since=48">Últimos dos
-										días</a></li>
-								<li><a href="map_tweets.html?since=0">Todos los
-										Tweets</a></li>
-	
-							</ul></li>
+								</ul></li>
 
-						<li class="dropdown"><a href="check_tweets.html"
-							class="dropdown-toggle" data-toggle="dropdown">Chequear
-								Tweets <b class="caret"></b>
-						</a>
-							<ul class="dropdown-menu">
-								<li><a href="check_tweets.html?since=1">Última hora</a></li>
-								<li><a href="check_tweets.html?since=24">Último día</a></li>
-								<li><a href="check_tweets.html?since=48">Últimos dos
-										días</a></li>
-								<li><a href="check_tweets.html?since=0">Todos los
-										Tweets</a></li>
-							</ul></li>
-					</ul>
+							<li class="dropdown"><a href="check_tweets.html"
+								class="dropdown-toggle" data-toggle="dropdown">Chequear
+									Tweets <b class="caret"></b>
+							</a>
+								<ul class="dropdown-menu">
+									<li><a href="check_tweets.html?since=1">Última hora</a></li>
+									<li><a href="check_tweets.html?since=24">Último día</a></li>
+									<li><a href="check_tweets.html?since=48">Últimos dos
+											días</a></li>
+									<li><a href="check_tweets.html?since=0">Todos los
+											Tweets</a></li>
+								</ul></li>
+						</ul>
+					</div>
+					<!--/.nav-collapse -->
 				</div>
-				<!--/.nav-collapse -->
 			</div>
 		</div>
+
+
+
+		<div class="container">
+			<h3>¿Qué es esto?</h3>
+			<div>
+				<span>Es un sistema para monitorear los mensajes emitidos en
+					Twitter asociados a eventos sísmicos.</span>
+			</div>
+		</div>
+
+
+		<div id="push"></div>
 	</div>
 
 
-	<div class="container">
-					<h3>¿Qué es esto?</h3>
-					<div>
-						<span>Es un sistema para monitorear los mensajes emitidos en Twitter asociados a eventos sísmicos.</span>
-					</div>
-				</div>
+	<div id="footer">
+		<div class="container">
+			<p class="muted credit">
+				Example courtesy <a href="http://martinbean.co.uk">Martin Bean</a>
+				and <a href="http://ryanfait.com/sticky-footer/">Ryan Fait</a>.
+			</p>
+		</div>
+	</div>
+
 
 
 
@@ -128,4 +146,6 @@ body {
         });
    </script>
 </body>
+
+
 </html>
