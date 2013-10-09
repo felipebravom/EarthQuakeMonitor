@@ -39,6 +39,8 @@ public class TwitterQuery implements Runnable {
 	
 	// Waiting period between queries in minutes
 	public final static int WAIT_PERIOD=10;
+	
+	// Waiting period after a problem with the Twitter API
 	public final static int PROBLEM_PERIOD=60;
 	
 	
