@@ -1,30 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<title>Sistema de Monitoreo de Sismos en Twitter</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Monitoreo de Sismos">
-<meta name="author" content="Felipe Bravo">
+<meta charset="utf-8" />
+<meta name="author" content="Felipe Bravo" />
+<title>Monitor Sísmico Social</title>
+<!-- <link rel="stylesheet" href="css/bootstrap.min.css" /> -->
+
+
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/footer.css" rel="stylesheet">
+
+
 
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-
-
-<!-- Le styles -->
-<link href="css/bootstrap.css" rel="stylesheet">
-<style>
-body {
-	padding-top: 60px;
-	/* 60px to make the container go all the way to the bottom of the topbar */
-}
-</style>
-<link href="css/bootstrap-responsive.css" rel="stylesheet">
-<link href="css/mystyle.css" rel="stylesheet">
-
-
-
 <script>
 	// To get the value of the since parameter
 	function GetURLParameter(sParam) {
@@ -49,34 +40,28 @@ body {
 				}, function(results) {
 					//alert(results.tweets[0].text);        
 					$.each(results.tweets, function(i, field) {
-/* 						$("#tweetList").append(
-								"<li>"	+ field.text + field.lat + " "
-										+ field.long + " " + field.date + " "
-										+ field.neu + "</li>"); */	
-										
+						/* 						$("#tweetList").append(
+						 "<li>"	+ field.text + field.lat + " "
+						 + field.long + " " + field.date + " "
+						 + field.neu + "</li>"); */
+
 						var tr_type;
-						if(field.neu>0){
-							tr_type="success";								
+						if (field.neu > 0) {
+							tr_type = "success";
+						} else if (field.neu == 0) {
+							tr_type = "warning";
+						} else {
+							tr_type = "error";
 						}
-						else if(field.neu==0){
-							tr_type="warning";							
-						}
-						else{
-							tr_type="error";
-						}				
-										
-										
+
 						$("#tweetTable").append(
-								"	<tr class=\""+tr_type+"\"> "
-								+	"<td>"+(i+1)+"</td>"
-								+	"<td>"+field.text+"</td>"
-								+	"<td>" + field.date + "</td>"
-								+	"<td>"+ (field.lat).toFixed(2) + "</td>"
-								+	"<td>"+ (field.long).toFixed(2) + "</td>"
-								+	"</tr>");
-						
-			
-						
+								"	<tr class=\""+tr_type+"\"> " + "<td>"
+										+ (i + 1) + "</td>" + "<td>"
+										+ field.text + "</td>" + "<td>"
+										+ field.date + "</td>" + "<td>"
+										+ (field.lat).toFixed(2) + "</td>"
+										+ "<td>" + (field.long).toFixed(2)
+										+ "</td>" + "</tr>");
 
 					});
 				});
@@ -87,74 +72,87 @@ body {
 
 </head>
 <body>
+	<div class="wrapper">
 
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<button type="button" class="btn btn-navbar" data-toggle="collapse"
-					data-target=".nav-collapse">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="brand" href="home.html">Monitor Sísmico Social</a>
-				<div class="nav-collapse collapse">
-					<ul class="nav">
-						<li><a href="home.html">Home</a></li>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="brand" href="home.html">Monitor Sísmico Social</a>
+					<div class="nav-collapse collapse">
+						<ul class="nav">
 
-						<li class="dropdown"><a href="map_tweets.html"
-							class="dropdown-toggle" data-toggle="dropdown">Mapa de Tweets
-								<b class="caret"></b>
-						</a>
-							<ul class="dropdown-menu">
-								<li><a href="map_tweets.html?since=1">Última hora</a></li>
-								<li><a href="map_tweets.html?since=24">Último día</a></li>
-								<li><a href="map_tweets.html?since=48">Últimos dos días</a></li>
-								<li><a href="map_tweets.html?since=0">Todos los Tweets</a></li>
+							<li class="dropdown"><a href="map_tweets.html"
+								class="dropdown-toggle" data-toggle="dropdown">Mapa de
+									Tweets <b class="caret"></b>
+							</a>
+								<ul class="dropdown-menu">
+									<li><a href="map_tweets.html?since=1">Última hora</a></li>
+									<li><a href="map_tweets.html?since=24">Último día</a></li>
+									<li><a href="map_tweets.html?since=48">Últimos dos
+											días</a></li>
+									<li><a href="map_tweets.html?since=0">Todos los Tweets</a></li>
 
-							</ul></li>
+								</ul></li>
 
-						<li class="dropdown"><a href="check_tweets.html"
-							class="dropdown-toggle" data-toggle="dropdown">Chequear
-								Tweets <b class="caret"></b>
-						</a>
-							<ul class="dropdown-menu">
-								<li><a href="check_tweets.html?since=1">Última hora</a></li>
-								<li><a href="check_tweets.html?since=24">Último día</a></li>
-								<li><a href="check_tweets.html?since=48">Últimos dos
-										días</a></li>
-								<li><a href="check_tweets.html?since=0">Todos los
-										Tweets</a></li>
-							</ul></li>
-					</ul>
+							<li class="dropdown"><a href="check_tweets.html"
+								class="dropdown-toggle" data-toggle="dropdown">Chequear
+									Tweets <b class="caret"></b>
+							</a>
+								<ul class="dropdown-menu">
+									<li><a href="check_tweets.html?since=1">Última hora</a></li>
+									<li><a href="check_tweets.html?since=24">Último día</a></li>
+									<li><a href="check_tweets.html?since=48">Últimos dos
+											días</a></li>
+									<li><a href="check_tweets.html?since=0">Todos los
+											Tweets</a></li>
+								</ul></li>
+						</ul>
+					</div>
+					<!--/.nav-collapse -->
 				</div>
-				<!--/.nav-collapse -->
 			</div>
 		</div>
+
+
+
+		<div class="container">
+
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Contenido</th>
+						<th>Fecha</th>
+						<th>Latitud</th>
+						<th>Longitud</th>
+					</tr>
+				</thead>
+				<tbody id="tweetTable">
+
+				</tbody>
+			</table>
+
+
+		</div>
+		<div class="push">
+			<!--//-->
+		</div>
 	</div>
+	<footer>
+		<div class="container">
+			<p>
+				<strong>Servicio Sismológico Universidad de Chile. </strong> Blanco
+				Encalada 2002 - Casilla #2777 Santiago, Chile. Email: <a
+					href="mailto:sismoguc@dgf.uchile.cl"> sismoguc@dgf.uchile.cl</a>
+			</p>
 
-
-	<div class="container">
-
-
-		<table class="table table-striped table-bordered table-hover">
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Contenido</th>
-					<th>Fecha</th>
-					<th>Latitud</th>
-					<th>Longitud</th>
-				</tr>
-			</thead>
-			<tbody id="tweetTable">
-			
-			</tbody>
-		</table>
-
-
-	</div>
-
-
+		</div>
+	</footer>
 
 	<script type="text/javascript" src="js/bootstrap-dropdown.js"></script>
 	<script type="text/javascript">

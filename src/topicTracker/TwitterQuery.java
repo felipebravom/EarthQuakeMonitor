@@ -205,10 +205,9 @@ public class TwitterQuery implements Runnable {
 		
 		tq.setupTwitter();
 				
-		Thread a=new Thread(tq);		
-		a.start();
+		Thread tracker=new Thread(tq);		
+		tracker.start();
 				
-
 	}
 
 

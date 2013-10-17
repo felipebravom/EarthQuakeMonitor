@@ -1,34 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<title>Sistema de Monitoreo de Sismos en Twitter</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Monitoreo de Sismos">
-<meta name="author" content="Felipe Bravo">
+<meta charset="utf-8" />
+<meta name="author" content="Felipe Bravo" />
+<title> Monitor Sísmico Social</title>
+<!-- <link rel="stylesheet" href="css/bootstrap.min.css" /> -->
+
+
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/footer.css" rel="stylesheet">
+
+
 
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script
 	src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=visualization"></script>
 
-<!-- Le styles -->
-<link href="css/bootstrap.css" rel="stylesheet">
-<style>
-body {
-	padding-top: 60px;
-	/* 60px to make the container go all the way to the bottom of the topbar */
-}
-</style>
-<link href="css/bootstrap-responsive.css" rel="stylesheet">
-
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
-      <script src="../assets/js/html5shiv.js"></script>
-    <![endif]-->
-
-<!-- Fav and touch icons -->
 
 <script>
 	// To get the value of the since parameter
@@ -56,15 +46,17 @@ body {
 		};
 
 		var map = new google.maps.Map(document.getElementById("googleMap"),
-				mapProp);	
-		
-		$.getJSON("retrieve.php", { since : GetURLParameter('since') },  function(results) {
+				mapProp);
+
+		$.getJSON("retrieve.php", {
+			since : GetURLParameter('since')
+		}, function(results) {
 			//alert(results.tweets[0].text);        
 			$.each(results.tweets, function(i, field) {
 				var latLng = new google.maps.LatLng(field.lat, field.long);
 				var marker = new google.maps.Marker({
 					position : latLng,
-					title : field.text+" "+field.date,
+					title : field.text + " " + field.date,
 					map : map
 				});
 				if (field.neu == -1)
@@ -84,67 +76,81 @@ body {
 
 
 
+
+
 </head>
-
 <body>
+	<div class="wrapper">
 
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<button type="button" class="btn btn-navbar" data-toggle="collapse"
-					data-target=".nav-collapse">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="brand" href="home.html">Monitor Sísmico Social</a>
-				<div class="nav-collapse collapse">
-					<ul class="nav">
-						<li><a href="home.html">Home</a></li>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="brand" href="home.html">Monitor Sísmico Social</a>
+					<div class="nav-collapse collapse">
+						<ul class="nav">
 
-						<li class="dropdown"><a href="map_tweets.html"
-							class="dropdown-toggle" data-toggle="dropdown">Mapa de Tweets <b class="caret"></b>
-						</a>
-							<ul class="dropdown-menu">
-								<li><a href="map_tweets.html?since=1">Última hora</a></li>
-								<li><a href="map_tweets.html?since=24">Último día</a></li>
-								<li><a href="map_tweets.html?since=48">Últimos dos
-										días</a></li>
-								<li><a href="map_tweets.html?since=0">Todos los
-										Tweets</a></li>
-	
-							</ul></li>
+							<li class="dropdown"><a href="map_tweets.html"
+								class="dropdown-toggle" data-toggle="dropdown">Mapa de
+									Tweets <b class="caret"></b>
+							</a>
+								<ul class="dropdown-menu">
+									<li><a href="map_tweets.html?since=1">Última hora</a></li>
+									<li><a href="map_tweets.html?since=24">Último día</a></li>
+									<li><a href="map_tweets.html?since=48">Últimos dos
+											días</a></li>
+									<li><a href="map_tweets.html?since=0">Todos los Tweets</a></li>
 
-						<li class="dropdown"><a href="check_tweets.html"
-							class="dropdown-toggle" data-toggle="dropdown">Chequear
-								Tweets <b class="caret"></b>
-						</a>
-							<ul class="dropdown-menu">
-								<li><a href="check_tweets.html?since=1">Última hora</a></li>
-								<li><a href="check_tweets.html?since=24">Último día</a></li>
-								<li><a href="check_tweets.html?since=48">Últimos dos
-										días</a></li>
-								<li><a href="check_tweets.html?since=0">Todos los
-										Tweets</a></li>
-							</ul></li>
-					</ul>
+								</ul></li>
+
+							<li class="dropdown"><a href="check_tweets.html"
+								class="dropdown-toggle" data-toggle="dropdown">Chequear
+									Tweets <b class="caret"></b>
+							</a>
+								<ul class="dropdown-menu">
+									<li><a href="check_tweets.html?since=1">Última hora</a></li>
+									<li><a href="check_tweets.html?since=24">Último día</a></li>
+									<li><a href="check_tweets.html?since=48">Últimos dos
+											días</a></li>
+									<li><a href="check_tweets.html?since=0">Todos los
+											Tweets</a></li>
+								</ul></li>
+						</ul>
+					</div>
+					<!--/.nav-collapse -->
 				</div>
-				<!--/.nav-collapse -->
 			</div>
 		</div>
+
+
+
+		<div class="container">
+		
+
+				<h1>Mapa de Tweets</h1>
+				<div id="googleMap"
+					style="width: 700px; height: 600px; margin-left: auto; margin-right: auto;"></div>
+
+			
+		</div>
+		<div class="push">
+			<!--//-->
+		</div>
 	</div>
+	<footer>
+		<div class="container">
+			<p>
+				<strong>Servicio Sismológico Universidad de Chile. </strong> Blanco
+				Encalada 2002 - Casilla #2777 Santiago, Chile. Email: <a
+					href="mailto:sismoguc@dgf.uchile.cl"> sismoguc@dgf.uchile.cl</a>
+			</p>
 
-	<div class="container">
-
-		<h1>Mapa de Tweets</h1>
-		<div id="googleMap"
-			style="width: 700px; height: 600px; margin-left: auto; margin-right: auto;"></div>
-	</div>
-	<!-- /container -->
-
-
-
-
-
+		</div>
+	</footer>
 
 	<script type="text/javascript" src="js/bootstrap-dropdown.js"></script>
 	<script type="text/javascript">
@@ -152,8 +158,5 @@ body {
 			$('.dropdown-toggle').dropdown();
 		});
 	</script>
-
-
-
 </body>
 </html>

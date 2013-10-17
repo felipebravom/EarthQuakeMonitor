@@ -1,32 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<title>Sistema de Monitoreo de Sismos en Twitter</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Monitoreo de Sismos">
-<meta name="author" content="Felipe Bravo">
+<meta charset="utf-8" />
+<meta name="author" content="Felipe Bravo" />
+<title> Monitor Sísmico Social</title>
+<!-- <link rel="stylesheet" href="css/bootstrap.min.css" /> -->
+
+
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/footer.css" rel="stylesheet">
+
+
 
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-
-
-<!-- Le styles -->
-<link href="css/bootstrap.css" rel="stylesheet">
-<style>
-body {
-	padding-top: 60px;
-	/* 60px to make the container go all the way to the bottom of the topbar */
-}
-</style>
-<link href="css/bootstrap-responsive.css" rel="stylesheet">
-<link href="css/sticky_footer.css" rel="stylesheet">
-
-
-
 <script>
-// To get the value of the since parameter
+	// To get the value of the since parameter
 	function GetURLParameter(sParam) {
 		var sPageURL = window.location.search.substring(1);
 		var sURLVariables = sPageURL.split('&');
@@ -42,31 +33,31 @@ body {
 
 <script>
 	$(document).ready(
-			function() {							
-							//alert(GetURLParameter('since'));
-							$.getJSON("retrieve.php", {
-								since : GetURLParameter('since')
-							}, function(results) {
-								//alert(results.tweets[0].text);        
-								$.each(results.tweets, function(i, field) {
-									$("#tweetList").append(
-											"<li><i class=\"icon-twitter\"></i>"
-													+ field.text + field.lat
-													+ " " + field.long + " "
-													+ field.date + " "
-													+ field.neu + "</li>");
+			function() {
+				//alert(GetURLParameter('since'));
+				$.getJSON("retrieve.php", {
+					since : GetURLParameter('since')
+				}, function(results) {
+					//alert(results.tweets[0].text);        
+					$.each(results.tweets, function(i, field) {
+						$("#tweetList").append(
+								"<li><i class=\"icon-twitter\"></i>"
+										+ field.text + field.lat + " "
+										+ field.long + " " + field.date + " "
+										+ field.neu + "</li>");
 
-								});
-							});
-						});
-			
+					});
+				});
+			});
 </script>
+
 
 
 
 </head>
 <body>
-	<div id="wrap">
+	<div class="wrapper">
+
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="navbar-inner">
 				<div class="container">
@@ -78,7 +69,6 @@ body {
 					<a class="brand" href="home.html">Monitor Sísmico Social</a>
 					<div class="nav-collapse collapse">
 						<ul class="nav">
-							<li><a href="home.html">Home</a></li>
 
 							<li class="dropdown"><a href="map_tweets.html"
 								class="dropdown-toggle" data-toggle="dropdown">Mapa de
@@ -115,37 +105,32 @@ body {
 
 
 		<div class="container">
-			<h3>¿Qué es esto?</h3>
-			<div>
-				<span>Es un sistema para monitorear los mensajes emitidos en
-					Twitter asociados a eventos sísmicos.</span>
-			</div>
+			<header class="hero-unit">
+				<h1>Monitor Social de Tweets</h1>
+				<p>Es un sistema para monitorear los mensajes emitidos en
+					Twitter asociados a eventos sísmicos.</p>
+			</header>
 		</div>
-
-
-		<div id="push"></div>
+		<div class="push">
+			<!--//-->
+		</div>
 	</div>
-
-
-	<div id="footer">
+	<footer>
 		<div class="container">
-			<p class="muted credit">
-				Example courtesy <a href="http://martinbean.co.uk">Martin Bean</a>
-				and <a href="http://ryanfait.com/sticky-footer/">Ryan Fait</a>.
+			<p>
+				<strong>Servicio Sismológico Universidad de Chile. </strong> Blanco
+				Encalada 2002 - Casilla #2777 Santiago, Chile. Email: <a
+					href="mailto:sismoguc@dgf.uchile.cl"> sismoguc@dgf.uchile.cl</a>
 			</p>
+
 		</div>
-	</div>
-
-
-
+	</footer>
 
 	<script type="text/javascript" src="js/bootstrap-dropdown.js"></script>
 	<script type="text/javascript">
-        $(document).ready(function () {
-            $('.dropdown-toggle').dropdown();
-        });
-   </script>
+		$(document).ready(function() {
+			$('.dropdown-toggle').dropdown();
+		});
+	</script>
 </body>
-
-
 </html>
