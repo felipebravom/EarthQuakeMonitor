@@ -35,38 +35,39 @@
 	$(document).ready(
 			function() {
 				//alert(GetURLParameter('since'));
-				$.getJSON("retrieve.php", {
-					since : GetURLParameter('since')
-				}, function(results) {
+				$.getJSON("retrieve_earthquake.php", function(results) {
 					//alert(results.tweets[0].text);        
-					$.each(results.tweets, function(i, field) {
-						/* 						$("#tweetList").append(
-						 "<li>"	+ field.text + field.lat + " "
-						 + field.long + " " + field.date + " "
-						 + field.neu + "</li>"); */
-
-						var tr_type;
-						if (field.neu > 0) {
-							tr_type = "success";
-						} else if (field.neu == 0) {
-							tr_type = "warning";
-						} else {
-							tr_type = "error";
-						}
-
-						$("#tweetTable").append(
-								"	<tr class=\""+tr_type+"\"> " + "<td>"
-										+ (i + 1) + "</td>" + "<td>"
-										+ field.text + "</td>" + "<td>"
-										+ field.date + "</td>" + "<td>"
-										+ (field.lat).toFixed(2) + "</td>"
-										+ "<td>" + (field.long).toFixed(2)
-										+ "</td>" + "</tr>");
+					$.each(results.earthquakes, function(i, field) {
+/* 						$("#tweetList").append(
+								"<li>"	+ field.text + field.lat + " "
+										+ field.long + " " + field.date + " "
+										+ field.neu + "</li>"); */	
+													
+										
+						if(i>0){
+							$("#tweetTable").append(
+									"	<tr> "
+									+	"<td>"+field[0]+"</td>"
+									+	"<td>"+field[1]+"</td>"
+									+	"<td>" + field[2] + "</td>"
+									+	"<td>"+ field[3] + "</td>"
+									+	"<td>"+ field[4] + "</td>"
+									+	"<td>"+ field[5] + "</td>"
+									+	"<td>"+ field[6] + "</td>"
+									+	"<td>"+ field[7] + "</td>"
+									+	"</tr>");							
+							
+						}				
+										
+			
+			
+						
 
 					});
 				});
 			});
 </script>
+
 
 
 
@@ -111,7 +112,9 @@
 									<li><a href="check_tweets.html?since=0">Todos los
 											Tweets</a></li>
 								</ul></li>
-								<li><a href="check_earthquakes.html">Últimos Sismos</a></li>
+							<li class="active"><a href="check_earthquakes.html">Últimos
+									Sismos</a></li>
+
 						</ul>
 					</div>
 					<!--/.nav-collapse -->
@@ -123,20 +126,39 @@
 
 		<div class="container">
 
+			<h3>Últimos sismos</h3>
+			<p>con magnitud igual o superior a 3.0 (1)</p>
+
 			<table class="table table-striped table-bordered table-hover">
 				<thead>
 					<tr>
-						<th>#</th>
-						<th>Contenido</th>
-						<th>Fecha</th>
+						<th>Fecha Local</th>
+						<th>Fecha UTC</th>
 						<th>Latitud</th>
 						<th>Longitud</th>
+						<th>Profundidad [Km]</th>
+						<th>Magnitud</th>
+						<th>Agencia</th>
+						<th>Referencia Geográfica</th>
+
+
+
 					</tr>
 				</thead>
 				<tbody id="tweetTable">
 
 				</tbody>
 			</table>
+
+			<p>
+				<strong>GUC</strong> (Geofísica Universidad de Chile): Sigla con la
+				cual es conocido el Servicio Sismológico de la Universidad de Chile
+				en la Red Sismológica Mundial.<br /> <strong>(1)</strong> En caso
+				de Sismos Sensibles serán publicados cualquiera sea su magnitud.<br />
+				<strong>(2)</strong> Sólo los sismos sensibles (reportados), tienen
+				informe de intensidades. <br /> <strong>(3)</strong> Sólo los
+				sismos sensibles se muestran en negrita.
+			</p>
 
 
 		</div>
