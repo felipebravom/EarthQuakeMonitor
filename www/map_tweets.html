@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="author" content="Felipe Bravo" />
-<title> Monitor Sísmico Social</title>
+<title>Monitor Sísmico Social</title>
 <!-- <link rel="stylesheet" href="css/bootstrap.min.css" /> -->
 
 
@@ -95,15 +95,21 @@
 						<ul class="nav">
 
 							<li class="dropdown"><a href="map_tweets.html"
-								class="dropdown-toggle" data-toggle="dropdown">Mapa de
-									Tweets <b class="caret"></b>
+								class="dropdown-toggle" data-toggle="dropdown">Mapas <b
+									class="caret"></b>
 							</a>
 								<ul class="dropdown-menu">
+									<li class="dropdown-header">Tweets</li>
 									<li><a href="map_tweets.html?since=1">Última hora</a></li>
 									<li><a href="map_tweets.html?since=24">Último día</a></li>
 									<li><a href="map_tweets.html?since=48">Últimos dos
 											días</a></li>
 									<li><a href="map_tweets.html?since=0">Todos los Tweets</a></li>
+									<li class="divider"></li>
+
+									<li class="dropdown-header">Sismos</li>
+									<li><a href="map_earthquakes.html">Últimos sismos</a></li>
+
 
 								</ul></li>
 
@@ -119,7 +125,7 @@
 									<li><a href="check_tweets.html?since=0">Todos los
 											Tweets</a></li>
 								</ul></li>
-								<li><a href="check_earthquakes.html">Últimos Sismos</a></li>
+							<li><a href="check_earthquakes.html">Últimos Sismos</a></li>
 						</ul>
 					</div>
 					<!--/.nav-collapse -->
@@ -130,13 +136,13 @@
 
 
 		<div class="container">
-		
 
-				<h1>Mapa de Tweets</h1>
-				<div id="googleMap"
-					style="width: 700px; height: 600px; margin-left: auto; margin-right: auto;"></div>
 
-			
+			<h1>Mapa de Tweets</h1>
+			<div id="googleMap"
+				style="width: 700px; height: 600px; margin-left: auto; margin-right: auto;"></div>
+
+
 		</div>
 		<div class="push">
 			<!--//-->

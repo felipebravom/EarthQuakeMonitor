@@ -16,6 +16,10 @@
 
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script
+	src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=visualization"></script>
+
+
 <script>
 	// To get the value of the since parameter
 	function GetURLParameter(sParam) {
@@ -32,41 +36,36 @@
 
 
 <script>
-	$(document).ready(
-			function() {
-				//alert(GetURLParameter('since'));
-				$.getJSON("retrieve.php", {
-					since : GetURLParameter('since')
-				}, function(results) {
-					//alert(results.tweets[0].text);        
-					$.each(results.tweets, function(i, field) {
-						/* 						$("#tweetList").append(
-						 "<li>"	+ field.text + field.lat + " "
-						 + field.long + " " + field.date + " "
-						 + field.neu + "</li>"); */
+	var myCenter = new google.maps.LatLng(-37, -69);
 
-						var tr_type;
-						if (field.neu > 0) {
-							tr_type = "success";
-						} else if (field.neu == 0) {
-							tr_type = "warning";
-						} else {
-							tr_type = "error";
-						}
+	function initialize() {
+		var mapProp = {
+			center : myCenter,
+			zoom : 4,
+			mapTypeId : google.maps.MapTypeId.ROADMAP
+		};
 
-						$("#tweetTable").append(
-								"	<tr class=\""+tr_type+"\"> " + "<td>"
-										+ (i + 1) + "</td>" + "<td>"
-										+ field.text + "</td>" + "<td>"
-										+ field.date + "</td>" + "<td>"
-										+ (field.lat).toFixed(2) + "</td>"
-										+ "<td>" + (field.long).toFixed(2)
-										+ "</td>" + "</tr>");
+		var map = new google.maps.Map(document.getElementById("googleMap"),
+				mapProp);
 
-					});
+		$.getJSON("retrieve_earthquake.php", function(results) {
+			$.each(results.earthquakes, function(i, field) {
+				var latLng = new google.maps.LatLng(field[2], field[3]);
+				var marker = new google.maps.Marker({
+					position : latLng,
+					title : "Fecha:" + field[0] + " Maginutd:" + field[4],
+					map : map
 				});
+
 			});
+		});
+
+	}
+
+	google.maps.event.addDomListener(window, 'load', initialize);
 </script>
+
+
 
 
 
@@ -129,20 +128,10 @@
 
 		<div class="container">
 
-			<table class="table table-striped table-bordered table-hover">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Contenido</th>
-						<th>Fecha</th>
-						<th>Latitud</th>
-						<th>Longitud</th>
-					</tr>
-				</thead>
-				<tbody id="tweetTable">
 
-				</tbody>
-			</table>
+			<h1>Mapa de Sismos</h1>
+			<div id="googleMap"
+				style="width: 700px; height: 600px; margin-left: auto; margin-right: auto;"></div>
 
 
 		</div>
