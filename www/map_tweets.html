@@ -66,7 +66,17 @@
 				else
 					marker.setIcon("img/smiley_neutral");
 
+				var infocontent = "<div><p>"+field.text + "</p><p>" + field.date+"</p></div>";
+				var infowindow = new google.maps.InfoWindow({
+					content : infocontent
+				});
+
+				google.maps.event.addListener(marker, 'click', function() {
+					infowindow.open(map, marker);
+				});
+
 			});
+
 		});
 
 	}

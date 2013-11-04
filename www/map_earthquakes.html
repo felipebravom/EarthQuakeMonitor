@@ -50,11 +50,23 @@
 
 		$.getJSON("retrieve_earthquake.php", function(results) {
 			$.each(results.earthquakes, function(i, field) {
+				var titleData = "Fecha:" + field[0] + " Profundidad:"
+						+ field[4] + "Km" + " Magnitud:" + field[5];
+				var geoRef = "Referencia Geográfica " + field[7];
+
 				var latLng = new google.maps.LatLng(field[2], field[3]);
 				var marker = new google.maps.Marker({
 					position : latLng,
-					title : "Fecha:" + field[0] + " Maginutd:" + field[4],
+					title : titleData,
 					map : map
+				});
+				var infocontent= "<div><p>"+titleData+"</p><p>"+geoRef+"</p></div>";
+				var infowindow = new google.maps.InfoWindow({
+					content : infocontent
+				});
+
+				google.maps.event.addListener(marker, 'click', function() {
+					infowindow.open(map, marker);
 				});
 
 			});
