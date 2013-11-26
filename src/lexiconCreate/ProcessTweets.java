@@ -6,9 +6,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
+
+import uk.ac.wlv.sentistrength.SentiStrength;
+import cmu.arktweetnlp.Twokenize;
 
 public class ProcessTweets {
 
@@ -31,10 +36,30 @@ public class ProcessTweets {
 			 
 			 String line;
 			 
-			 while ((line = bf.readLine()) != null) {
-				 System.out.println(line);
-				 
+			 
+			 SentiStrength sentiStrength = new SentiStrength();
+			 String sentiParams[] = {"sentidata", "extra/SentiStrength/spanish/", "trinary"};
+			 sentiStrength.initialise(sentiParams);	
+			 
+			 List<Entry> entries=new ArrayList<Entry>();
+			 int i=0;
+			 
+			 while ((line = bf.readLine()) != null && i <30 ) {	
+				 Entry e=new Entry(line);
+				 e.evaluateSentiStrength(sentiStrength);
+					 
+				 entries.add(e);			 
+				 i++;
 			 }
+			 
+			 Sent140Evaluator s140=new Sent140Evaluator(entries);
+			 s140.evaluateSentimentApiEntrySet();
+			 
+			 for(Entry e:entries){
+				 System.out.println(e.toString());
+			 }
+			 
+			 
 		
 		
 		} catch (FileNotFoundException e) {
