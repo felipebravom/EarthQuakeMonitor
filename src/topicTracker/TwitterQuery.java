@@ -26,7 +26,7 @@ public class TwitterQuery implements Runnable {
 	
 	
 	// The query to retrieve tweets related to an Earthquake
-	public final static String QUERY = "temblor OR terremoto OR sismo OR tsunami lang:es";
+	public final static String QUERY = "temblor OR terremoto OR sismo OR tsunami OR maremoto lang:es";
 	
 	// The location is centred in Chile with a radius of 2500 KM
 	public final static Double LAT_CENT=-36.78552;
@@ -129,7 +129,7 @@ public class TwitterQuery implements Runnable {
 		query.setLang("es");
 		query.setCount(100);
 		query.setSinceId(this.sinceId);
-		//query.setGeoCode(location, radius, unit);
+		//query.setGeoCode(location, radius, unit);ueba.php
 
 		QueryResult result;
 		try {

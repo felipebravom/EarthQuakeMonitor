@@ -2,10 +2,13 @@ package lexiconCreate;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -26,6 +29,9 @@ public class ProcessTweets {
 		
 		try {
 
+		//	PrintWriter out = new PrintWriter("processed.csv");
+			
+			
 			
 			ZipFile zf=new ZipFile("data/clean_spanish_tweets.csv.zip");
 			
@@ -40,24 +46,49 @@ public class ProcessTweets {
 			 SentiStrength sentiStrength = new SentiStrength();
 			 String sentiParams[] = {"sentidata", "extra/SentiStrength/spanish/", "trinary"};
 			 sentiStrength.initialise(sentiParams);	
-			 
+			
+			 PrintWriter out = new PrintWriter(new FileOutputStream( new File("processed.csv"), true)); 				
 			 List<Entry> entries=new ArrayList<Entry>();
 			 int i=0;
 			 
-			 while ((line = bf.readLine()) != null && i <30 ) {	
-				 Entry e=new Entry(line);
-				 e.evaluateSentiStrength(sentiStrength);
-					 
+			 while ((line = bf.readLine()) != null ) {
+				 
+				 Entry e=new Entry(line.replaceAll("\t", " "));
+				 e.evaluateSentiStrength(sentiStrength);					 
 				 entries.add(e);			 
+				 
+				 if(i==9000){
+					 Sent140Evaluator s140=new Sent140Evaluator(entries);
+					 s140.evaluateSentimentApiEntrySet();
+					 for(Entry ent:entries){
+						 out.println(ent.toString());
+					 }
+					 out.close();
+					 out = new PrintWriter(new FileOutputStream( new File("processed.csv"), true)); 
+					 entries.clear();
+					 i=0;
+					 try {
+						Thread.sleep(1000*1);
+						System.out.println("Deperte");
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+						continue;
+					}		 
+					 
+				 }
+				 
+				 
 				 i++;
 			 }
 			 
-			 Sent140Evaluator s140=new Sent140Evaluator(entries);
-			 s140.evaluateSentimentApiEntrySet();
 			 
-			 for(Entry e:entries){
-				 System.out.println(e.toString());
-			 }
+			 
+			 
+			 
+			 
+			 
+			 zf.close();
 			 
 			 
 		

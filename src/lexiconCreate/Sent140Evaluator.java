@@ -31,7 +31,7 @@ public class Sent140Evaluator {
 
 	public void evaluateSentimentApiEntrySet() {
 
-		int maxSize = 6000; // Max number of elements for API call
+		int maxSize = 10000; // Max number of elements for API call
 		int numEntries = this.entrySet.size();
 		List<List<Entry>> entryListList = new ArrayList<List<Entry>>(); // a list having each partition
 
@@ -107,7 +107,7 @@ public class Sent140Evaluator {
 							polarity = "positive";
 						}
 						entry.getFeatures().put("s140", polarity);
-						System.out.println("Procese");
+					
 
 					}
 
@@ -116,7 +116,7 @@ public class Sent140Evaluator {
 				os.close();
 				br.close();
 				conn.disconnect();
-				Thread.sleep(60 * 1);
+				Thread.sleep(1);
 
 
 			} catch (InterruptedException ex) {

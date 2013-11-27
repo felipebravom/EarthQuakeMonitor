@@ -32,10 +32,8 @@ public class Entry {
 
 	public String toString() {
 		String value = content;
-		for (String feat : this.getFeatures().keySet()) {
-			String datValue = this.getFeatures().get(feat).toString();
-			value += "\t" + feat + ":" + datValue;
-		}
+		value += "\t"+this.features.get("SSpos")+"\t"+this.features.get("SSneg")+
+				"\t"+this.features.get("SSneu")+"\t"+this.features.get("s140");
 
 		return value;
 	}
