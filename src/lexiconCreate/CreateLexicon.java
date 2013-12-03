@@ -27,12 +27,12 @@ public class CreateLexicon {
 			 BufferedReader bf = new BufferedReader(
 					 new InputStreamReader(zf.getInputStream(ze)));
 			 
-			 Map<String,Map<String,Integer>> wordMap=new HashMap<String,Map<String,Integer>>();
+			 Map<String,Map<String,Double>> wordMap=new HashMap<String,Map<String,Double>>();
 			 Twokenize tokenizer = new Twokenize();
 				
-			 int poscount=0;
-			 int negcount=0;
-			 int neucount=0;
+			 double poscount=0.0d;
+			 double negcount=0.0d;
+			 double neucount=0.0d;
 			 
 			 
 			 String line;
@@ -63,9 +63,9 @@ public class CreateLexicon {
 						 
 						 
 						 if(!wordMap.containsKey(word)){
-							 int pos=0;
-							 int neu=0;
-							 int neg=0;
+							 double pos=0.0d;
+							 double neu=0.0d;
+							 double neg=0.0d;
 							 
 							 if(sspol.equals("neutral"))
 								 neu++;
@@ -73,7 +73,7 @@ public class CreateLexicon {
 								 pos++;
 							 else
 								 neg++;
-							 Map<String,Integer> polMap=new HashMap<String,Integer>();
+							 Map<String,Double> polMap=new HashMap<String,Double>();
 							 polMap.put("pos", pos);
 							 polMap.put("neu", neu);
 							 polMap.put("neg", neg);
@@ -83,7 +83,7 @@ public class CreateLexicon {
 							 
 						 }
 						 else{
-							 Map<String,Integer> polMap=wordMap.get(word);
+							 Map<String,Double> polMap=wordMap.get(word);
 							 if(sspol.equals("neutral")){
 								 polMap.put("neu", polMap.get("neu")+1);
 							 }								 
@@ -105,30 +105,107 @@ public class CreateLexicon {
 			 
 			 
 			 
-			 
+
 			 PrintWriter pw=new PrintWriter("lexicon.csv");
 			 
-			 pw.println("word\tposCount\tneuCount\tnegCount");
+			 pw.println("word\tpos\tneg\tneu\tposProb\tnegProb\tneuProb\tsubProb\tpolScore\tsubScore");
 			 
 			 String words[]=wordMap.keySet().toArray(new String[0]);
 			 Arrays.sort(words);
 			 
+			 double polScoreMin=0;
+			 double polScoreMax=0;
+			 
+			 double subScoreMin=0;
+			 double subScoreMax=0;
+			 
 			 for(String word:words){
-				 Map<String,Integer> polMap=wordMap.get(word);				 
-				 int pos=polMap.get("pos");
-				 int neu=polMap.get("neu");
-				 int neg=polMap.get("neg");
+				 Map<String,Double> polMap=wordMap.get(word);				 
+				 double pos=polMap.get("pos");
+				 double neu=polMap.get("neu");
+				 double neg=polMap.get("neg");
 				 
-				 double posProb=pos/poscount;
+				 double posProb=pos/poscount;				 
 				 double negProb=neg/negcount;
+				 
+				 polMap.put("posProb",posProb);
+				 polMap.put("negProb",negProb);
+				 
 				 double neuProb=neu/neucount;
 				 
+				 polMap.put("neuProb", neuProb);
 				 
+				 double subProb=(pos+neg)/(poscount+negcount); // probabiliad de la palabra de ser sujetiva
+				 
+				 polMap.put("subProb", subProb);
+				 
+				 
+				 double polScore=posProb-negProb;
+				 
+				 polMap.put("polScore", polScore);
+				 
+				 
+				 if(polScore>polScoreMax){
+					 polScoreMax=polScore;
+				 }
+				 if(polScore<polScoreMin){
+					 polScoreMin=polScore;
+				 }
+				 
+				 double subScore=subProb-neuProb;
+				 
+				 polMap.put("subScore",subScore);
 				
-				 pw.println(word+"\t"+pos+"\t"+neu+"\t"+neg+"\t"+posProb+"\t"+negProb+"\t"+neuProb);
+				 if(subScore>subScoreMax){
+					 subScoreMax=subScore;
+				 }
+				 if(subScore<subScoreMin){
+					 subScoreMin=subScore;
+				 }
+				 
+				 
+				 pw.println(word+"\t"+pos+"\t"+neg+"\t"+neu+"\t"+posProb+"\t"+negProb+
+						 "\t"+neuProb+"\t"+subProb+"\t"+polScore+"\t"+subScore);
+				 
 				 
 				 
 			 }
+			 
+			 pw.close();
+			 
+			 pw=new PrintWriter("lexiconScore.csv");
+			 
+			 pw.println("word\tpolScore\tsubScore");
+			 
+			 for(String word:words){
+				 Map<String,Double> polMap=wordMap.get(word);	
+				 double polScore=polMap.get("polScore");
+				 if(polScore<0){
+					 polScore=(polScore/polScoreMin)*(-5); // Lo escalamos entre 0 y 5
+				 }
+				 if(polScore>0){
+					 polScore=(polScore/polScoreMax)*(5);  // los negativas entre 0 y -5
+				 }
+				 double subScore=polMap.get("subScore");
+				 if(subScore<0){
+					 subScore=(subScore/subScoreMin)*(-5);
+				 }
+				 if(subScore>0){
+					 subScore=(subScore/subScoreMax)*(5);
+				 }
+				 
+				 
+				 pw.println(word+"\t"+polScore+"\t"+subScore);
+				 
+			 
+			 
+			 
+			 
+			 }
+			 
+			 
+			 
+			 
 			 
 			 pw.close();
 			 
