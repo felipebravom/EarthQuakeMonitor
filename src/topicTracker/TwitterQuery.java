@@ -147,7 +147,7 @@ public class TwitterQuery implements Runnable {
 		while ((query = result.nextQuery()) != null){
 			
 						
-			result = this.twitter.search(query);
+			result = this.twitter.search(query);			
 			if(result.getMaxId()>this.sinceId)			
 				this.sinceId=result.getMaxId();
 			
