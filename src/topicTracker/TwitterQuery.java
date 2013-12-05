@@ -3,6 +3,8 @@ package topicTracker;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cybozu.labs.langdetect.DetectorFactory;
+import com.cybozu.labs.langdetect.LangDetectException;
 import com.mongodb.DBObject;
 
 import twitter4j.GeoLocation;
@@ -62,6 +64,8 @@ public class TwitterQuery implements Runnable {
 	public void setMongoConnection(MongoConnection mC) {
 		this.mongoConnection = mC;
 	}
+	
+	
 
 	public void setupTwitter() {
 		ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -76,6 +80,7 @@ public class TwitterQuery implements Runnable {
 		this.status = 1;
 	}
 	
+	// setups the parameters of the sentiment Evaluator
 	public void setupSentiStrength(){
 		this.sentiStrength = new SentiStrength();
 		String sentiParams[] = {"sentidata", "extra/SentiStrength/spanish/", "trinary"};
@@ -83,6 +88,16 @@ public class TwitterQuery implements Runnable {
 		
 	}
 	
+	public void setupLanguageDetector(){
+		try {
+			DetectorFactory.loadProfile("extra/profiles/");
+		} catch (LangDetectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+
 	
 	
 	// Process the list of Status
@@ -99,8 +114,16 @@ public class TwitterQuery implements Runnable {
 				
 				// Creates TwitterEntry from Status
 				TwitterEntry twitterEntry=new TwitterEntry(status);
-				// Evaluates the Sentiment
-				twitterEntry.evaluateSentiStrength(this.sentiStrength);
+				TwitterEntryController twEntCon=new TwitterEntryController(twitterEntry);
+				twEntCon.tokenize();
+				
+				// Detects the language
+				twEntCon.detectLanguage();
+		
+				
+				// Evaluates the Sentiment				
+				twEntCon.evaluateSentiStrength(sentiStrength);
+				
 
 				DBObject tweet = twitterEntry.dbTweet();
 				dbObjects.add(tweet);				
@@ -204,6 +227,8 @@ public class TwitterQuery implements Runnable {
 		tq.setupSentiStrength();
 		
 		tq.setupTwitter();
+		
+		tq.setupLanguageDetector();
 				
 		Thread tracker=new Thread(tq);		
 		tracker.start();

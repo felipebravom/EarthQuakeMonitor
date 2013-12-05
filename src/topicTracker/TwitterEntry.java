@@ -1,5 +1,9 @@
 package topicTracker;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
@@ -8,43 +12,36 @@ import uk.ac.wlv.sentistrength.SentiStrength;
 // Manages the tweet, the sentiment evaluation, and the storing into MongoDB
 
 public class TwitterEntry {
-	Status status; //twitter4j Tweet representation
-	private int pos;
-	private int neg;
-	private int neu;
+	private Status status; //twitter4j Tweet representation
+	private List<String> tokens;  // List of words in the content
+	private Map<String,Object> features;
+	
 
 
 	public TwitterEntry(Status status) {
 		this.status=status;
+		this.features=new HashMap<String,Object>();
 
+	}
+	
+	public Status getStatus(){
+		return this.status;
+	}
+	
+	public List<String> getTokens(){
+		return this.tokens;
+	}
+	
+	public Map<String,Object> getFeatures(){
+		return this.features;
+	}
+	
+	public void setTokens(List<String> tokens){
+		this.tokens=tokens;
 	}
 
 
-	// Evaluates SentiStrength 
-	public void evaluateSentiStrength(SentiStrength sentiStrength){
-		String words[]=this.status.getText().split(" ");
 
-		String sentence = "";
-
-		for (int i = 0; i < words.length; i++) {
-			sentence += words[i];
-			if (i < words.length - 1) {
-				sentence += "+";
-			}
-		}
-
-
-		String result = sentiStrength.computeSentimentScores(sentence);
-
-		System.out.println(result);
-
-		String[] values = result.split(" ");
-
-		this.pos = Integer.parseInt(values[0]);
-		this.neg = Integer.parseInt(values[1]);
-		this.neu = Integer.parseInt(values[2]);
-
-	}
 
 
 	// converts the Entry into a DBObject
@@ -71,11 +68,15 @@ public class TwitterEntry {
 		if(this.status.getPlace()!=null){
 			dbTweet.put("place", this.status.getPlace().getName());			
 		}
+		
+		// Insert all the features
+		
+		for(String feature:this.features.keySet()){
+			dbTweet.put(feature, this.features.get(feature));		
+		}
 
 
-		dbTweet.put("pos", pos);
-		dbTweet.put("neg", neg);
-		dbTweet.put("neu", neu);
+	
 
 
 		return dbTweet;
