@@ -1,5 +1,6 @@
 package topicTracker;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,41 @@ public class TwitterEntryController {
 		List<String> tokens=tokenizer.tokenizeRawTweetText(content);
 		this.twitterEntry.setTokens(tokens);		
 
+	}
+	
+	
+	// Replaces URLs to special characters, as wells as User mentions, and repeated vowels
+	public void processTokens(){
+		
+		List<String> cleanWords=new ArrayList<String>();
+
+
+		for(String word:this.twitterEntry.getTokens()){
+
+			String cleanWord; 
+
+
+
+			cleanWord=word.replaceAll("([aeiou])\\1+","$1");
+			
+			if(word.matches("http.*|www\\..*")){
+				cleanWord="URL";
+			}
+			else if(word.matches("@.*")){
+				cleanWord="USER";
+			}	
+
+
+
+			cleanWords.add(cleanWord);
+
+
+		}
+		
+		this.twitterEntry.setTokens(cleanWords);		
+		
+		
+		
 	}
 
 	// Detects the language of the message

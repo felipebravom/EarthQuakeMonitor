@@ -69,8 +69,7 @@ public class TwitterEntry {
 			dbTweet.put("place", this.status.getPlace().getName());			
 		}
 		
-		// Insert all the features
-		
+		// Insert all the features		
 		for(String feature:this.features.keySet()){
 			dbTweet.put(feature, this.features.get(feature));		
 		}
