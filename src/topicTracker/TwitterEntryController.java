@@ -25,7 +25,7 @@ public class TwitterEntryController {
 	}
 
 
-	// Tokenizes the content of the lowecased tweet 
+	// Tokenizes the content of the lowercased tweet 
 	public void tokenize(){
 		String content=this.twitterEntry.getStatus().getText().toLowerCase();
 		Twokenize tokenizer = new Twokenize();

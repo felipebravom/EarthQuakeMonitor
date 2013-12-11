@@ -8,8 +8,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 import twitter4j.Status;
-import uk.ac.wlv.sentistrength.SentiStrength;
-// Manages the tweet, the sentiment evaluation, and the storing into MongoDB
 
 public class TwitterEntry {
 	private Status status; //twitter4j Tweet representation

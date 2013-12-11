@@ -1,46 +1,61 @@
 package lexiconCreate;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Test {
 
 	public Test() {
 		// TODO Auto-generated constructor stub
-		
+
 	}
 	static public void main(String args[]){
-	int a=3;
-	int b=43534545;
-	double c=a/b;
-	System.out.println(c);
-	
-	
-	String url1="http://www.google.cl";
-	String url2="https://www.lala.la";
-	String url3="www.hola.com";
-	String lala="www.google.cl";
-	
-	Pattern p=Pattern.compile("http");
-	
-	
-	System.out.println("hola mundo".matches("http.*"));
-	
-	System.out.println("Hoooollaaaa a todoooos los weoneeees pacooos culiados"
-            .replaceAll("([aeiou])\\1+","$1"));
-	
-	
-	
-	
-	if(lala.matches("http.*|www\\..*")){
-		System.out.println("hola");
-	}
-	
-	if("asdasd".matches("@.*")){
-		System.out.println("user");
-	}
-	
-	
-		
+		Map<String,String> dict=new HashMap<String,String>();
+
+		Scanner sc;
+		try {
+			sc = new Scanner(new File("extra/ElhPolar_esV1proc.lex"));
+			sc.useDelimiter("\n");
+			for (String line = sc.next(); sc.hasNext(); line = sc.next()) {
+				String pair[] = line.split("\t");
+
+				dict.put(pair[0].toLowerCase(), pair[1]);	
+			}
+			
+			sc.close();
+
+			
+			String words[]=dict.keySet().toArray(new String[0]);
+			Arrays.sort(words);
+			
+			
+			PrintWriter pw=new PrintWriter("lex.csv");
+			for(String word:words){
+				pw.println(word+"\t"+dict.get(word));
+				System.out.println(word+" "+dict.get(word));
+			}
+			
+			
+			pw.close();
+
+
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+
+
+
+
 	}
 
 }
