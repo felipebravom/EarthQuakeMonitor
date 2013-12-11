@@ -47,7 +47,6 @@ public class TwitterEntryController {
 			String cleanWord; 
 
 
-
 			cleanWord=word.replaceAll("([aeiou])\\1+","$1");
 			
 			if(word.matches("http.*|www\\..*")){
@@ -56,7 +55,6 @@ public class TwitterEntryController {
 			else if(word.matches("@.*")){
 				cleanWord="USER";
 			}	
-
 
 
 			cleanWords.add(cleanWord);
