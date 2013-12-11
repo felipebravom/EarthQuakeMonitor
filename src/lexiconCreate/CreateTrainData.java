@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import uk.ac.wlv.sentistrength.SentiStrength;
+
 import cmu.arktweetnlp.Twokenize;
 
 // Crea datos de entrenamiento con los distintos lexicos y SentiStrength
@@ -21,6 +23,17 @@ public class CreateTrainData {
 
 
 	static public void main(String args[]){
+		
+		SentiStrength sentiStrength = new SentiStrength();
+		String sentiParams[] = {"sentidata", "extra/SentiStrength/spanish/", "trinary"};
+		sentiStrength.initialise(sentiParams);	
+
+		EarthQuakeLexEvaluator eqLex=new EarthQuakeLexEvaluator("extra/earthQuakeLex.csv");
+		eqLex.processDict();
+
+		LexiconEvaluator elhPol = new LexiconEvaluator("extra/ElhPolar_es.csv");
+		elhPol.processDict();
+
 
 
 		try {
@@ -33,10 +46,7 @@ public class CreateTrainData {
 			Map<String,Map<String,Double>> wordMap=new HashMap<String,Map<String,Double>>();
 			Twokenize tokenizer = new Twokenize();
 
-			double poscount=0.0d;
-			double negcount=0.0d;
-			double neucount=0.0d;
-
+	
 
 			String line;
 			while( (line=bf.readLine())!=null){
@@ -48,194 +58,21 @@ public class CreateTrainData {
 				// System.out.println(content+" "+sspol+" "+s140);
 				// Solo considero tweets con igual polarida segun ambos metodos
 				if(sspol.equals(s140)){
-					List<String> words=tokenizer.tokenize(content);
-
-					List<String> cleanWords=new ArrayList<String>();
-
-
-					for(String word:words){
-
-						String cleanWord; 
-
+					
+					
+					Entry e=new Entry(content);
+					e.tokenize();
+					
+					e.evaluateSentiStrength(sentiStrength);
+					e.evaluateEarthQuakeLex(eqLex);
+					e.evaluateElhPolar(elhPol);
+					
+				}
+			}
 			
+			PrintWriter pw=new PrintWriter("dataset.csv");
 
-						cleanWord=word.replaceAll("([aeiou])\\1+","$1");
-						
-						if(word.matches("http.*|www\\..*")){
-							cleanWord="URL";
-						}
-						else if(word.matches("@.*")){
-							cleanWord="USER";
-						}	
-
-
-
-						cleanWords.add(cleanWord);
-
-
-					}
-
-					if(sspol.equals("neutral"))
-						neucount++;
-					else if(sspol.equals("positive"))
-						poscount++;
-					else
-						negcount++;
-
-
-
-
-					for(String word:cleanWords){
-
-
-						if(!wordMap.containsKey(word)){
-							double pos=0.0d;
-							double neu=0.0d;
-							double neg=0.0d;
-
-							if(sspol.equals("neutral"))
-								neu++;
-							else if(sspol.equals("positive"))
-								pos++;
-							else
-								neg++;
-							Map<String,Double> polMap=new HashMap<String,Double>();
-							polMap.put("pos", pos);
-							polMap.put("neu", neu);
-							polMap.put("neg", neg);
-
-							wordMap.put(word, polMap);						 
-
-
-						}
-						else{
-							Map<String,Double> polMap=wordMap.get(word);
-							if(sspol.equals("neutral")){
-								polMap.put("neu", polMap.get("neu")+1);
-							}								 
-							else if(sspol.equals("positive")){
-								polMap.put("pos", polMap.get("pos")+1);
-							}								
-							else{
-								polMap.put("neg", polMap.get("neg")+1);
-							}
-
-						}					 
-
-					}
-
-
-
-				}
-			}
-
-
-
-
-			PrintWriter pw=new PrintWriter("lexicon.csv");
-
-			pw.println("word\tpos\tneg\tneu\tposProb\tnegProb\tneuProb\tsubProb\tpolScore\tsubScore");
-
-			String words[]=wordMap.keySet().toArray(new String[0]);
-			Arrays.sort(words);
-
-			double polScoreMin=0;
-			double polScoreMax=0;
-
-			double subScoreMin=0;
-			double subScoreMax=0;
-
-			for(String word:words){
-				Map<String,Double> polMap=wordMap.get(word);				 
-				double pos=polMap.get("pos");
-				double neu=polMap.get("neu");
-				double neg=polMap.get("neg");
-
-				double posProb=pos/poscount;				 
-				double negProb=neg/negcount;
-
-				polMap.put("posProb",posProb);
-				polMap.put("negProb",negProb);
-
-				double neuProb=neu/neucount;
-
-				polMap.put("neuProb", neuProb);
-
-				double subProb=(pos+neg)/(poscount+negcount); // probabiliad de la palabra de ser sujetiva
-
-				polMap.put("subProb", subProb);
-
-
-				double polScore=posProb-negProb;
-
-				polMap.put("polScore", polScore);
-
-
-				if(polScore>polScoreMax){
-					polScoreMax=polScore;
-				}
-				if(polScore<polScoreMin){
-					polScoreMin=polScore;
-				}
-
-				double subScore=subProb-neuProb;
-
-				polMap.put("subScore",subScore);
-
-				if(subScore>subScoreMax){
-					subScoreMax=subScore;
-				}
-				if(subScore<subScoreMin){
-					subScoreMin=subScore;
-				}
-
-
-				pw.println(word+"\t"+pos+"\t"+neg+"\t"+neu+"\t"+posProb+"\t"+negProb+
-						"\t"+neuProb+"\t"+subProb+"\t"+polScore+"\t"+subScore);
-
-
-
-			}
-
-			pw.close();
-
-			pw=new PrintWriter("lexiconScore.csv");
-
-			pw.println("word\tpolScore\tsubScore");
-
-			for(String word:words){
-				Map<String,Double> polMap=wordMap.get(word);	
-				double polScore=polMap.get("polScore");
-				if(polScore<0){
-					polScore=(polScore/polScoreMin)*(-5); // Lo escalamos entre 0 y 5
-				}
-				if(polScore>0){
-					polScore=(polScore/polScoreMax)*(5);  // los negativas entre 0 y -5
-				}
-				double subScore=polMap.get("subScore");
-				if(subScore<0){
-					subScore=(subScore/subScoreMin)*(-5);
-				}
-				if(subScore>0){
-					subScore=(subScore/subScoreMax)*(5);
-				}
-
-
-				pw.println(word+"\t"+polScore+"\t"+subScore);
-
-
-
-
-
-			}
-
-
-
-
-
-			pw.close();
-
-
+		
 
 
 

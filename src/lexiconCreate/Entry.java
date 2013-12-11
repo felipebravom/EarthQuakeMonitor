@@ -24,8 +24,8 @@ public class Entry {
 	public void tokenize(){
 		String tweet = this.content.replaceAll("\\+", " ");
 		
-		Twokenize t = new Twokenize();
-		List<String> words = t.tokenize(tweet);
+	 //	Twokenize t = new Twokenize();
+		List<String> words = Twokenize.tokenizeRawTweetText(tweet);
 		
 		List<String> cleanWords=new ArrayList<String>();
 
