@@ -125,7 +125,7 @@ public class Entry {
 				Map<String,Double> emoMap=eqLex.getWord(word);
 				
 				earthPol += emoMap.get("pol");
-				earthSub += emoMap.get("sub");
+				earthSub += emoMap.get("subj");
 				
 			}
 			

@@ -46,7 +46,7 @@ public class CreateTrainData {
 			Map<String,Map<String,Double>> wordMap=new HashMap<String,Map<String,Double>>();
 			Twokenize tokenizer = new Twokenize();
 
-	
+			List<Entry> entries=new ArrayList<Entry>();
 
 			String line;
 			while( (line=bf.readLine())!=null){
@@ -59,6 +59,8 @@ public class CreateTrainData {
 				// Solo considero tweets con igual polarida segun ambos metodos
 				if(sspol.equals(s140)){
 					
+					System.out.println(content);
+					
 					
 					Entry e=new Entry(content);
 					e.tokenize();
@@ -67,11 +69,31 @@ public class CreateTrainData {
 					e.evaluateEarthQuakeLex(eqLex);
 					e.evaluateElhPolar(elhPol);
 					
+					e.getFeatures().put("label", sspol);
+					
+					entries.add(e);
+					
+					System.out.println("agregue");
+					
 				}
 			}
 			
 			PrintWriter pw=new PrintWriter("dataset.csv");
+			
+			pw.println("content\tSSPOS\tSSNEG\tearthPol\tearthSub\telhPos\telhSub\tlabel");
 
+			for (Entry e:entries){
+				
+				
+				pw.println(e.getContent()+"\t"+e.getFeatures().get("SSPOS")+"\t"+e.getFeatures().get("SSNEG")+"\t"+
+						e.getFeatures().get("earthPol")+"\t"+e.getFeatures().get("earthSub")+"\t"+e.getFeatures().get("elhPos")
+						+"\t"+e.getFeatures().get("elhSub")+"\t"+e.getFeatures().get("label")
+						);
+				
+				
+			}
+			
+			pw.close();
 		
 
 
