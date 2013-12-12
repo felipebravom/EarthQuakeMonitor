@@ -22,7 +22,7 @@ public class Entry {
 	}
 	
 	public void tokenize(){
-		String tweet = this.content.replaceAll("\\+", " ");
+		String tweet = this.content.replaceAll("\\+", " ").replaceAll("([aeiou])\\1+","$1");;
 		
 	 //	Twokenize t = new Twokenize();
 		List<String> words = Twokenize.tokenizeRawTweetText(tweet);
@@ -32,10 +32,10 @@ public class Entry {
 
 		for(String word:words){
 
-			String cleanWord; 
+			String cleanWord=word; 
 
 
-			cleanWord=word.replaceAll("([aeiou])\\1+","$1");
+		
 			
 			if(word.matches("http.*|www\\..*")){
 				cleanWord="URL";
