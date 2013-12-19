@@ -47,6 +47,9 @@ public class CreateTrainData {
 			Twokenize tokenizer = new Twokenize();
 
 			List<Entry> entries=new ArrayList<Entry>();
+			
+			PrintWriter pw=new PrintWriter("dataset.csv");
+			pw.println("content\tSSPOS\tSSNEG\tearthPos\tearthNeg\tearthSub\tearthNeu\telhPos\telhNeg\tlabel\tpredicted\tsubScore\tpolScore");
 
 			String line;
 			while( (line=bf.readLine())!=null){
@@ -59,7 +62,7 @@ public class CreateTrainData {
 				// Solo considero tweets con igual polarida segun ambos metodos
 				if(sspol.equals(s140)){
 					
-					System.out.println(content);
+					//System.out.println(content);
 					
 					
 					Entry e=new Entry(content);
@@ -69,29 +72,34 @@ public class CreateTrainData {
 					e.evaluateEarthQuakeLex(eqLex);
 					e.evaluateElhPolar(elhPol);
 					
+					e.evaluateSentimentLinearModel();
+					
 					e.getFeatures().put("label", sspol);
 					
-					entries.add(e);
 					
-					System.out.println("agregue");
+					pw.println(e.getContent()+"\t"+e.getFeatures().get("SSpos")+"\t"+e.getFeatures().get("SSneg")+"\t"+
+							e.getFeatures().get("earthPos")+"\t"+e.getFeatures().get("earthNeg")+"\t"+
+							e.getFeatures().get("earthSub")+"\t"+e.getFeatures().get("earthNeu")+
+							"\t"+e.getFeatures().get("elhPos")
+							+"\t"+e.getFeatures().get("elhNeg")+"\t"+e.getFeatures().get("label")
+							+"\t"+e.getFeatures().get("predicted")+"\t"+e.getFeatures().get("subScore")
+							+"\t"+e.getFeatures().get("polScore")
+							
+							);
+					
+					
+
+					
+				//	System.out.println("agregue");
 					
 				}
 			}
 			
-			PrintWriter pw=new PrintWriter("dataset.csv");
 			
-			pw.println("content\tSSPOS\tSSNEG\tearthPol\tearthSub\telhPos\telhSub\tlabel");
+			
+		
 
-			for (Entry e:entries){
-				
-				
-				pw.println(e.getContent()+"\t"+e.getFeatures().get("SSPOS")+"\t"+e.getFeatures().get("SSNEG")+"\t"+
-						e.getFeatures().get("earthPol")+"\t"+e.getFeatures().get("earthSub")+"\t"+e.getFeatures().get("elhPos")
-						+"\t"+e.getFeatures().get("elhSub")+"\t"+e.getFeatures().get("label")
-						);
-				
-				
-			}
+
 			
 			pw.close();
 		

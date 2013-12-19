@@ -3,6 +3,9 @@ package topicTracker;
 import java.util.ArrayList;
 import java.util.List;
 
+import lexiconCreate.EarthQuakeLexEvaluator;
+import lexiconCreate.LexiconEvaluator;
+
 import com.cybozu.labs.langdetect.DetectorFactory;
 import com.cybozu.labs.langdetect.LangDetectException;
 import com.mongodb.DBObject;
@@ -48,6 +51,9 @@ public class TwitterQuery implements Runnable {
 	
 	private MongoConnection mongoConnection;
 	private SentiStrength sentiStrength;
+	
+	private EarthQuakeLexEvaluator eqLex;
+	private LexiconEvaluator elhPol;
 	
 	
 	private Twitter twitter;
@@ -97,6 +103,14 @@ public class TwitterQuery implements Runnable {
 		}
 	}
 	
+	public void setupLexicons(){
+		this.eqLex=new EarthQuakeLexEvaluator("extra/earthQuakeLex.csv");
+		this.eqLex.processDict();
+
+		this.elhPol = new LexiconEvaluator("extra/ElhPolar_es.csv");
+		this.elhPol.processDict();
+	}
+	
 
 	
 	
@@ -122,7 +136,12 @@ public class TwitterQuery implements Runnable {
 		
 				
 				// Evaluates the Sentiment				
-				twEntCon.evaluateSentiStrength(sentiStrength);
+				//twEntCon.evaluateSentiStrength(sentiStrength);
+				
+				twEntCon.evaluateEarthQuakeLex(eqLex);
+				twEntCon.evaluateElhPolar(elhPol);
+				
+				twEntCon.evaluateSentimentLinearModel();
 				
 
 				DBObject tweet = twitterEntry.dbTweet();
@@ -223,8 +242,11 @@ public class TwitterQuery implements Runnable {
 		mc.setupMongo();
 		
 		TwitterQuery tq=new TwitterQuery();
-		tq.setMongoConnection(mc);		
-		tq.setupSentiStrength();
+		tq.setMongoConnection(mc);	
+		
+		//tq.setupSentiStrength();
+		
+		tq.setupLexicons();
 		
 		tq.setupTwitter();
 		
