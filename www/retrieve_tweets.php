@@ -44,7 +44,7 @@ try {
 				'text' => $obj ['text'],
 				"lat" => $obj ['loc'] [0],
 				"long" => $obj ['loc'] [1],
-				'neu' => $obj ['neu'],
+				'label' => $obj ['label'],
 				'date' => $date 
 		);
 		array_push ( $tweets, $tweet_data );

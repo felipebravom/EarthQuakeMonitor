@@ -48,7 +48,7 @@
 		var map = new google.maps.Map(document.getElementById("googleMap"),
 				mapProp);
 
-		$.getJSON("retrieve.php", {
+		$.getJSON("retrieve_tweets.php", {
 			since : GetURLParameter('since')
 		}, function(results) {
 			//alert(results.tweets[0].text);        
@@ -59,9 +59,9 @@
 					title : field.text + " " + field.date,
 					map : map
 				});
-				if (field.neu == -1)
+				if (field.label == -1)
 					marker.setIcon("img/smiley_sad");
-				else if (field.neu == 1)
+				else if (field.label == 1)
 					marker.setIcon("img/smiley_happy");
 				else
 					marker.setIcon("img/smiley_neutral");

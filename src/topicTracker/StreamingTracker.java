@@ -3,7 +3,7 @@ package topicTracker;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
 
-public class PrintSampleStream {
+public class StreamingTracker {
 
 	public final static String OAUTH_CONSUMER_KEY = "2J6YxWjj7zaVt979uoZtA";
 	public final static String OAUTH_CONSUMER_SECRET = "8cIMS0nopUvQ8IVQZIUAx1SE2F56YoIC4PtcEDjn9E";
@@ -11,7 +11,7 @@ public class PrintSampleStream {
 
 	public final static String OAUTH_ACCESS_TOKEN_SECRET = "XKCKw6YkZknPXR9A1PgjjiJzQf0MkWBIsz2pobN3VI";
 
-	public PrintSampleStream() {
+	public StreamingTracker() {
 		// TODO Auto-generated constructor stub
 	}
 

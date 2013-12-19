@@ -35,20 +35,16 @@
 	$(document).ready(
 			function() {
 				//alert(GetURLParameter('since'));
-				$.getJSON("retrieve.php", {
+				$.getJSON("retrieve_tweets.php", {
 					since : GetURLParameter('since')
 				}, function(results) {
 					//alert(results.tweets[0].text);        
 					$.each(results.tweets, function(i, field) {
-						/* 						$("#tweetList").append(
-						 "<li>"	+ field.text + field.lat + " "
-						 + field.long + " " + field.date + " "
-						 + field.neu + "</li>"); */
 
 						var tr_type;
-						if (field.neu > 0) {
+						if (field.label > 0) {
 							tr_type = "success";
-						} else if (field.neu == 0) {
+						} else if (field.label == 0) {
 							tr_type = "warning";
 						} else {
 							tr_type = "error";

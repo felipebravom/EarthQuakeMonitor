@@ -44,9 +44,12 @@ public class TwitterEntryController {
 			String cleanWord=word; 
 
 
+			// Replace URLs for a special token URL
 			if(word.matches("http.*|www\\..*")){
 				cleanWord="URL";
 			}
+			
+			// Replace user mentions to a special token USER
 			else if(word.matches("@.*")){
 				cleanWord="USER";
 			}	
@@ -189,6 +192,8 @@ public class TwitterEntryController {
 		double polScore=InterceptWpol+earthPosWpol*earthPos+earthNegWpol*earthNeg+
 				elhPosWpol*elhPos+elhNegWpol*elhNeg;
 
+		
+		// Label corresponds to the polarity class, 1 for positive, 0 for neutral and -1 for negative
 
 		int label;
 		if(subScore<=0){
@@ -205,7 +210,9 @@ public class TwitterEntryController {
 
 		this.twitterEntry.getFeatures().put("subScore", subScore);
 		this.twitterEntry.getFeatures().put("polScore", polScore);
-		this.twitterEntry.getFeatures().put("neu", label);
+		
+		
+		this.twitterEntry.getFeatures().put("label", label);
 
 
 

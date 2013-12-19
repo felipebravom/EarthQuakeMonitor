@@ -20,7 +20,7 @@ import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 import uk.ac.wlv.sentistrength.SentiStrength;
 
-public class TwitterQuery implements Runnable {
+public class QueryTracker implements Runnable {
 
 	public final static String OAUTH_CONSUMER_KEY = "2J6YxWjj7zaVt979uoZtA";
 	public final static String OAUTH_CONSUMER_SECRET = "8cIMS0nopUvQ8IVQZIUAx1SE2F56YoIC4PtcEDjn9E";
@@ -61,7 +61,7 @@ public class TwitterQuery implements Runnable {
 
 	private long sinceId;
 	
-	public TwitterQuery() {
+	public QueryTracker() {
 		// TODO Auto-generated constructor stub
 		this.status = 0;
 		this.sinceId=0;
@@ -103,6 +103,8 @@ public class TwitterQuery implements Runnable {
 		}
 	}
 	
+	
+	// Reads the list of sentiment words for the different lexicons
 	public void setupLexicons(){
 		this.eqLex=new EarthQuakeLexEvaluator("extra/earthQuakeLex.csv");
 		this.eqLex.processDict();
@@ -241,18 +243,18 @@ public class TwitterQuery implements Runnable {
 		MongoConnection mc = new MongoConnection();
 		mc.setupMongo();
 		
-		TwitterQuery tq=new TwitterQuery();
-		tq.setMongoConnection(mc);	
+		QueryTracker qt=new QueryTracker();
+		qt.setMongoConnection(mc);	
 		
 		//tq.setupSentiStrength();
 		
-		tq.setupLexicons();
+		qt.setupLexicons();
 		
-		tq.setupTwitter();
+		qt.setupTwitter();
 		
-		tq.setupLanguageDetector();
+		qt.setupLanguageDetector();
 				
-		Thread tracker=new Thread(tq);		
+		Thread tracker=new Thread(qt);		
 		tracker.start();
 				
 	}
